@@ -53,31 +53,26 @@ def Jacobi(matrix, b, epsilon):
     old_array = b.copy()
     b_new = b.copy()
     print(b)
-
+    count_of_operations = 0
     current_epsilon = 1e9
     for i in range(len(b)):
         old_array[i] = 1
     new_array = np.zeros(len(b))
     while current_epsilon > epsilon:
+        current_epsilon = 0
         for i in range(matrix.shape[0]):
             new_array[i] = b_new[i]
             for j in range(matrix.shape[1]):
+                count_of_operations += 1
                 if i != j:
                     new_array[i] -= matrix[i, j] * old_array[j]
             new_array[i] = new_array[i] / matrix[i, i]
-        # print(new_array[0], old_array[0])
-        current_epsilon = 0
-        for i in range(len(new_array)):
-            current_epsilon = max(current_epsilon, abs(new_array[0] - old_array[0]))
-        # print(new_array)
-        # print(current_epsilon, epsilon)
-        # print(old_array)
-        # print("========")
+            current_epsilon = max(current_epsilon, abs(new_array[i] - old_array[i]))
         old_array = new_array.copy()
     print("Answer")
     print(new_array)
+    print("count_of_operations", count_of_operations)
     return new_array
-
 
 
 def gauss(Ll, Uu, bb):
